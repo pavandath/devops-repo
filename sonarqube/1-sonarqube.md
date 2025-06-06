@@ -17,4 +17,6 @@
 
 ## Sonarqube
 * Sonarqube is a third party tool developed by sonar source
-* This is a code analysis tool which is aimed to code quality by identifying the issues upfront rather than waiting the application to move to production.
+* This is a code analysis tool which is aimed to provide code quality by identifying the issues upfront rather than waiting the application to move to production.
+* It will continuously analyse and measure code quality, using `Quality Gates` and `Quality Profiles`
+* It is a web based tool and supports multiple languages
