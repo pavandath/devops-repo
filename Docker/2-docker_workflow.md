@@ -1,5 +1,5 @@
 ## After successfully installing docker run:
-    - docker run helloworld
+    docker run helloworld
 
 - Now in your server there are two things:
     - **docker client** and **docker daemon**
