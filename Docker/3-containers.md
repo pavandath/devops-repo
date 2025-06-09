@@ -43,10 +43,6 @@ docker run -it centos bash
 # Exit safely without stopping
 # Use: Ctrl + P + Q
 
-- Here if you type exit in interactive mode it will exit and container stops to exit safely 
-    > ctrl + p + q 
-- This will exit the container without stopping it
-
 # To run a container with detached mode
 docker run centos -d sleep 2000
 
