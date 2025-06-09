@@ -1,11 +1,11 @@
 ## Docker Image Fundamentals
 
-**Layered Structure**: Docker images are made up of stacked, read-only layers.
-**Template Nature**: They serve as read-only templates for creating containers.
-**Base & Custom Layers**: You typically start with a base image and add your application's specific layers on top.
-**Layer Caching**: Docker uses caching; if different image versions share layers, those layers aren't re-downloaded or rebuilt, saving time and bandwidth.
-**Immutability**: Once built, a Docker image cannot be modified. Any changes require building a new image.
-**Container's Writable Layer**: When a container is created, a read/write layer is added on top of the image's read-only layers. All changes made within the running container occur in this writable layer.
+- **Layered Structure**: Docker images are made up of stacked, read-only layers.
+- **Template Nature**: They serve as read-only templates for creating containers.
+- **Base & Custom Layers**: You typically start with a base image and add your application's specific layers on top.
+- **Layer Caching**: Docker uses caching; if different image versions share layers, those layers aren't re-downloaded or rebuilt, saving time and bandwidth.
+- **Immutability**: Once built, a Docker image cannot be modified. Any changes require building a new image.
+- **Container's Writable Layer**: When a container is created, a read/write layer is added on top of the image's read-only layers. All changes made within the running container occur in this writable layer.
 
 ## Creating image thorugh commit way
 **Never tell about this in interview**
