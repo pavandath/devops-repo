@@ -33,7 +33,12 @@
 - Simply we can group multiple jobs in a folder
 - If build 1 is triggering build 2 then for build 2 build 1 is upstream and build 1 build 2 is downstream
 - For this in folder after creating new item you need to select post build action  Build other projects  and select which job to trigger
-  ![image](https://github.com/user-attachments/assets/203d5242-80c9-4d1a-8339-9c1bc2191f32)
+  ![image](https://github.com/user-attachments/assets/203d5242-80c9-4d1a-8339-9c1bc2191f32
+
+- while installing plugins from manage jenkins > plugins > Available plugins we need to restart jenkins for some to work
+  - we can do this by either http:url/safeRestart
+  - or you can install a plugin called saferestart the restart option will be shown directly on left options
+- **NOTE:** Make sure while restarting there are no jobs running, if there are any then it will wait for the jobs to complete and then it will restart
 
 
 
