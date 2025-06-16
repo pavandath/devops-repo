@@ -26,4 +26,14 @@
       - and the no.of executors mean how many tasks that node must run if it is 2 then two build tasks will run and 3 one will be in the queue
       - if you click build 2 times for the same task the only one time it will start even the executors are 2 the second build of same job will be in queue
       - If you need to run multiple jobs then in job configuration enable "Execute concurrent builds if necessary"
-      - 
+- If we want to maintain interconnectivity between jobs i.e, for example if build job is success then that should automatically trigger the sonar job and if it is success then it must trigger docker build and pust and so on
+- If we want to maintain this type then there is a concept known as downstream jobs and upstream jobs
+- This is a leagacy way which means if we are still using free style jobs and folders then we use this way
+- We can create a folder and mention some jobs there and make sure that particular developers are having access to only those folder (i.e, only jobs inside that folder)
+- Simply we can group multiple jobs in a folder
+- If build 1 is triggering build 2 then for build 2 build 1 is upstream and build 1 build 2 is downstream
+- For this in folder after creating new item you need to select post build action  Build other projects  and select which job to trigger
+  ![image](https://github.com/user-attachments/assets/203d5242-80c9-4d1a-8339-9c1bc2191f32)
+
+
+
