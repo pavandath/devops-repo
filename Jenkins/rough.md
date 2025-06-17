@@ -6,7 +6,7 @@
 - While executing commands through shell in jenkins job it will be executed as jenkins user
 - Build periodically - it is  a cron job triggers, build everytime even though there is no change in git
 - poll Scm - build everytime, when there is a change (same cron task for timer) but only triggers when there is a change in git
-- webhook - it only triggers when a commit happens
+- webhook - it only triggers when a commit happens, here no cronjob is needed as soon as commit happens the change reflects
     - Enable GitHub hook trigger for GITScm polling in jenkins
     - go to your github repo settings (repo settings not main settings) there in webhooks add webhook and in place of jenkins url add jenkins-url/github-webhook under it select json format and save
     - now each time a commit happens it triggers the job
