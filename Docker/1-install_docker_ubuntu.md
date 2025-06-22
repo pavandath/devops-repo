@@ -38,4 +38,11 @@ sudo docker version
 rm /etc/containerd/config.toml
 systemctl restart containerd
 
+pavan@jenkins-slave-1:~$ ls -l /var/run/docker.sock
+srw-rw---- 1 root docker 0 Jun 22 17:17 /var/run/docker.sock
+pavan@jenkins-slave-1:~$ exit
+logout
+root@jenkins-slave-1:~# chown pavan:docker /var/run/docker.sock
+root@jenkins-slave-1:~# chmod 660 /var/run/docker.sock
+
 ```
