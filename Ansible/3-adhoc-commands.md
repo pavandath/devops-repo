@@ -1,0 +1,4 @@
+- in order work with ansible we use adhoc commands
+- ansible -i inv -m ping all
+    - inv is inventroy file where host ip's are available -m is module, telling to use ping module and all tells to execute in all nodes in the inv file
+- if the inventory file hasn't mentioned it will look for the hosts in /etc/ansible/hosts

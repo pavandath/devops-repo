@@ -1,0 +1,21 @@
+#comments
+- name: <name of the play>
+  hosts: <which hosts this playbook has to be executed>
+  become: <yes/no> #if yes this will be executed with root permissions
+  tasks: 
+  - name: <name of the task>
+    <module-name>:
+    <module-params-1>: <value-1>
+    <module-params-2>: <value-2>
+    .....
+    <module-params-n>: <value-n>
+
+------------------------
+
+  - hosts: all
+    tasks:
+    - name: ping-server
+      ping:
+
+-----------------------
+ansible-playbook -i inv v1.yaml
