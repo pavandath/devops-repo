@@ -1,21 +1,217 @@
-#comments
+# Ansible Playbook Structure
+* Playbooks are represented in `yaml` files
+* A typicall ansible playbook looks like this 
+```yaml
+---
 - name: <name of the play>
-  hosts: <which hosts this playbook has to be executed>
-  become: <yes/no> #if yes this will be executed with root permissions
+  hosts: <On which hosts this playbook has to be executed>
+  become: <yes/no> # this will execute as a root privilige
   tasks: 
   - name: <name of the task>
-    <module-name>:
-    <module-params-1>: <value-1>
-    <module-params-2>: <value-2>
-    .....
-    <module-params-n>: <value-n>
+    <module-name>
+      <module-parameter-1>: <value-1>
+      <module-parameter-2>: <value-2>
+      ....
+      ....
+      ...
+      state: <value of the state>
+```
+* Lets write a playbook to ping all nodess
+```yaml
+# apache-play.yaml
+---
+- name: Installing apache server
+  become: yes
+  hosts: all # /etc/ansible/hosts
+  tasks:
+  - name: install apache2
+    apt:
+      name: apache2
+      state: present
+      update_cache: yes
+# ansible-playbook -i hosts apache-play.yaml
+```
 
-------------------------
 
-  - hosts: all
-    tasks:
-    - name: ping-server
-      ping:
+---
 
------------------------
-ansible-playbook -i inv v1.yaml
+- name: Creating a file
+  hosts: all
+  tasks:
+  - name: creating a file
+    ansible.builtin.file:     #Builtin  module for file
+      path: /tmp/filemodule.txt
+      mode: 0777   #Ansible treats 777 as a decimal number unless it starts with 0, mode: 0777 → interpreted as octal 777 (which is correct).
+      owner: ansible
+      state: touch   #creates file using touch in file module
+
+
+---
+ansible-playbook -i inv file.yaml --syntax-check # to check syntax before running
+
+---
+- name: Installing webserver, updating repositroies and copying files
+  hosts: all 
+  become: true
+  tasks:
+  - name: installing and updating apache webserver
+    ansible.builtin.apt:
+      name: apache2
+      update_cache: yes #similar to apt update
+      state: present # default
+  - name: copying html file to apache server
+    copy:
+      src: index.html
+      dest: /var/www/html/index.html
+
+- The state parameter in Ansible modules tells Ansible what to do with the specified package.
+- present means:
+➤ “Make sure this package is installed.”
+➤ If it's already installed, Ansible does nothing.
+➤ If it's not installed, it installs it.
+
+---
+
+#variables
+# to change dynamic data during run time for that we use template, it is same as copy but also includes dynamic data
+- name: Installing webserver, updating repositroies and copying files
+  hosts: all 
+  become: true
+  vars:
+    courseName: Devops
+    owner: Pavan
+  tasks:
+  - name: installing and updating apache webserver
+    ansible.builtin.apt:
+      name: apache2
+      update_cache: yes #similar to apt update
+      state: present      # default
+  - name: copying html file to apache server
+    template:
+      src: index.html
+      dest: /var/www/html/index.html 
+    #copy:
+      #src: index.html
+      #dest: /var/www/html/index.html
+---
+# TO send the value during the runtime
+ansible-playbook -i inv apache.yaml --extra-vars owner=Dath
+---
+- in index.html you can mention like:
+- <h1> Hello {{owner}} welcome to {{courseName}}</h1>
+---
+
+- name: Installing webserver, updating repositroies and copying files
+  hosts: all 
+  become: true
+  vars_files:
+  - dev_vars.yaml
+  vars:
+    courseName: Devops
+    owner: Pavan
+  tasks:
+  - name: installing and updating apache webserver
+    ansible.builtin.apt:
+      name: apache2
+      update_cache: yes #similar to apt update
+      state: present      # default
+  - name: copying html file to apache server
+    template:
+      src: index.html
+      dest: /var/www/html/index.html
+---
+In dev_vars.yaml file contents are "courseName: Aws"
+---
+vars_files is used whenever the variables are written in the seperate file and you have to use those
+---
+# if there are multiple files and you want to send it explicitly
+- name: Installing webserver, updating repositroies and copying files
+  hosts: all 
+  become: true
+  vars_files:
+  - "{{env}}_vars.yaml"
+  vars:
+    courseName: Devops
+    owner: Pavan
+  tasks:
+  - name: installing and updating apache webserver
+    ansible.builtin.apt:
+      name: apache2
+      update_cache: yes #similar to apt update
+      state: present      # default
+  - name: copying html file to apache server
+    template:
+      src: index.html
+      dest: /var/www/html/index.html
+---
+there are two files dev_vars.yaml and test_vars.yaml then
+
+        ansible-playbook -i inv apache.yaml -e env=test
+---
+- name: Installing webserver, updating repositroies and copying files
+  hosts: all 
+  become: true
+  vars: 
+  - evn: dev
+  vars_files:
+  - "{{env}}_vars.yaml"
+  vars:
+    courseName: Devops
+    owner: Pavan
+  tasks:
+  - name: installing and updating apache webserver
+    ansible.builtin.apt:
+      name: apache2
+      update_cache: yes #similar to apt update
+      state: present      # default
+  - name: copying html file to apache server
+    template:
+      src: index.html
+      dest: /var/www/html/index.html
+  handlers:
+  - name: Restart the service
+    service:
+      name: apache2
+      state: restarted
+      enabled: true
+
+- If nothing is passed dev is taken by default
+- handlers are used to restart a service or do a task when a change is happened
+
+---
+#without loops
+- name: prac using without loops
+  hosts: all 
+  become: yes
+  tasks:
+  - name: Installing git 
+    apt: 
+    name: git
+    state: present
+  - name: Installing apache webserver
+    apt:
+    name: apache2
+    state: present
+  - name: Installing tree
+    apt:
+    name: tree
+    state: present
+
+---
+
+# with loops
+- name: prac using with loops
+  hosts: all
+  become: yes
+  tasks: 
+  - name: install multiple packages using loops
+    apt: name="{{item}}" state=present
+    with_items:
+    - git
+    - apache2
+    - tree
+    - unzip
+
+  - name: Another way to install using loops
+    apt:
+      name: ['git','apache2','tree','unzip']
