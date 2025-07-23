@@ -1,0 +1,4 @@
+- Terraform uses HCL (Hashicorp Language) to code
+- when we run terraform init
+    - it will create a .terraform folder in it we will be having 
+    - provider/version/.exe using this it will communicate to terraform api 
